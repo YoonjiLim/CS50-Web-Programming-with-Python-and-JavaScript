@@ -7,6 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run Django unit tests
+        working-directory: CS50Lec7/airline0
         run: |
           pip3 install --user django
           python3 manage.py test
