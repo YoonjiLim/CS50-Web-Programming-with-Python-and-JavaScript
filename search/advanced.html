@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Advanced Search</title>
+        <link href="styles.css" rel="stylesheet">
+    </head>
+    <body>
+        <header role="banner">
+            <div class="header-top">
+                <a href="https://www.google.com">
+                    <img src="googlelogo.png" alt="Google Logo" width="74" height="24">
+                </a>
+                <nav class="navbar" role="navigation">
+                    <a href="index.html" target="_top">Google Search</a>
+                </nav>
+            </div>
+            <div class="header-title">
+                <h1>Advanced Search</h1>
+            </div>
+        </header>
+
+        <main class="content">
+            <form class="as" action="https://google.com/search" method="get" name="f" role="search">
+                <input value="en" name="hl" type="hidden">
+                <div class="as-title">
+                    <h2 class="search-title">Find pages with...</h2>
+                    <div class="empty-cell"></div>
+                    <div class="hint-title">To do this in the search box:</div>
+                </div>
+                
+                <div class="as-row">
+                    <div class="as-label">
+                        <label for="all">all these words:</label>
+                    </div>
+                    <div class="as-input">
+                        <input id="all" name="as_q" type="text">
+                    </div>
+                    <div class="as-hint">
+                        <div class="hint">Type the important words:
+                            <span class="example">tricolor rat terrier</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="as-row">
+                    <div class="as-label">
+                        <label for="exact">these exact word or phrase:</label>
+                    </div>                        
+                    <div class="as-input">
+                        <input id="exact" name="as_epq" type="text">
+                    </div>
+                    <div class="as-hint">
+                        <div class="hint">Put exact words in quotes:
+                            <span class="example">"rat terrier"</span>
+                        </div>                        
+                    </div>
+                </div>
+
+                <div class="as-row">
+                    <div class="as-label">
+                        <label for="any">any of these words:</label>
+                    </div>
+                    <div class="as-input">
+                        <input id="any" name="as_oq" type="text">
+                    </div>
+                    <div class="as-hint">
+                        <div class="hint">Type OR between all the words you want:
+                            <span class="example">miniature OR standard</span>
+                        </div>                        
+                    </div>
+                </div>
+
+                <div class="as-row">
+                    <div class="as-label">
+                        <label for="none">none of these words:</label>
+                    </div>
+                    <div class="as-input">
+                        <input id="none" name="as_eq" type="text">
+                    </div>
+                    <div class="as-hint">
+                        <div class="hint">Put a minus sign just between words you don't want:
+                            <span class="example">-rodent, -"Jack Russell"</span>
+                        </div>
+                    </div>
+                </div>     
+
+                <div class="as-row action-row">
+                    <div class="as-label"></div>
+                    <div class="btn-cell">
+                        <input class="as-btn" type="submit" value="Advanced Search">
+                    </div>
+                    <div class="as-hint"></div>
+                </div>
+            </form>
+
+            <div class="as-links">
+                <p>Advanced Search...</p>
+                <ul>
+                    <li><a href="https://support.google.com/websearch?p=adv_pages_similar&hl=en" target="_blank">Find pages similar to a URL</a></li>
+                    <li><a href="https://support.google.com/websearch?p=adv_pages_visited&hl=en" target="_blank">Search pages you've visited</a></li>
+                    <li><a href="https://support.google.com/websearch?p=adv_operators&hl=en" target="_blank">Use operators in the search box</a></li>
+                    <li><a href="https://www.google.com/preferences?hl=en" target="_blank">Customize your search settings</a></li>
+                </ul>
+            </div>
+        </main>
+
+        <footer>
+            <a href="https://support.google.com/websearch/?p=ws_results_help&hl=en&fg=1" target="_blank">Support</a>
+            <a href="https://policies.google.com/privacy?hl=en&fg=1" target="_blank">Privacy</a>
+            <a href="https://policies.google.com/terms?hl=en&fg=1" target="_blank">Terms</a>
+        </footer>
+    </body>
+</html>

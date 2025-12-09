@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>My Webpage</title>
+        <style>
+            @keyframes hide{
+                0%{
+                    opacity: 1;
+                    height: 100%;
+                    line-height: 100%;
+                    padding: 20px;
+                    margin-bottom: 10px;
+                }
+
+                75%{
+                    opacity: 0;
+                    height: 100%;
+                    line-height: 100%;
+                    padding: 20px;
+                    margin-bottom: 10px; 
+                }
+
+                100%{
+                    opacity: 0; 
+                    height: 0px;
+                    line-height: 0px;
+                    padding: 0px;
+                    margin-bottom: 0px;
+                }
+            }
+
+            .post {
+                background-color:rgb(0, 0, 255);
+                padding: 20px;
+                margin-bottom: 10px;
+                animation-name: hide;
+                animation-duration: 2s;
+                animation-fill-mode: forward;
+                animation-play-state: paused;
+            }
+
+            body {
+                padding-bottom: 50px;
+            }
+        </style>
+        <script>
+            //counter: 다음에 불러올 글 시작 번호. quantity: 한 번에 불러올 글 개수
+            let counter = 1;
+            const quantity = 20;
+            //페이지 다 로딩되면 load()실행
+            document.addEventListener('DOMContentLoaded', load);
+            //맨 아래까지 스크롤 시 load() 실행, 추가 로딩
+            window.onscroll = () => {
+                if (window.innerHeight + window.scrollY >= document.body.offsetHeight){
+                    load();
+                }
+            };
+
+            document.addEventListener('click', event => {
+                const element = event.target;
+                if (element.className === 'hide'){
+                    element.parentElement.style.animationPlayState = 'running';
+                    element.parentElement.addEventListener('animationend', () =>{
+                        element.parentElement.remove();
+                    });
+                }
+            });
+
+            function load(){
+                const start = counter;
+                const end = start + quantity - 1;
+                counter = end + 1;
+
+                //api 요청. 서버가 data.posts라는 JSON 응답을 보내면 각 글을 DOM에 추가 
+                fetch(`/posts?start=${start}&end=${end}`)
+                .then(response => response.json())
+                .then(data => {
+                    data.posts.forEach(add_post);
+                })
+            };
+
+            //<div class="post">글 내용</div> 형태로 #posts에 추가
+            function add_post(contents){
+                const post = document.createElement('div');
+                post.className = 'post';
+                post.innerHTML = `${contents} <button class="hide">Hide</button>`;
+                document.querySelector('#posts').append(post);
+            };
+        </script>
+    </head>
+    <body>
+        <div id="posts"></div>
+    </body>
+</html>

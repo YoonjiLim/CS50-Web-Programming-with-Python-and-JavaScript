@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Google Image</title>
+        <link href="styles.css" rel="stylesheet">
+    </head>
+    <body>
+        <nav class="navbar" role="navigation">
+            <a href="index.html" target="_top">Google Search</a>
+        </nav>
+
+        <main class="content">
+            <div class="logo">
+                <div class="logo-box">
+                    <img src="googlelogo.png" alt="Google Logo" width="272" height="92">
+                    <span class="images-label">Images</span>
+                </div>
+            </div>
+
+            <div class="search">
+                <form action = "https://google.com/search" method="get">
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" name="q" title="search">
+                        <input type="hidden" name="tbm" value="isch">
+                    </div>
+                    <div class="search-btn">
+                        <input type="submit" value="Google Search" name="btnK">
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <footer>
+            <a href="https://policies.google.com/privacy?hl=ko&fg=1" target="_blank">Privacy</a>
+            <a href="https://policies.google.com/terms?hl=ko&fg=1" target="_blank">Terms</a>
+        </footer>
+    </body>
+</html>
