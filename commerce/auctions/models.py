@@ -27,6 +27,14 @@ class Listing(models.Model):
         related_name="listings"
     )
 
+    winner = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="won_listings"
+    )
+
     def __str__(self):
         return self.title
 
