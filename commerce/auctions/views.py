@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
+from auctions.forms import ListingForm
 from .models import Bid, Listing, User, Comment
 from decimal import Decimal
 
@@ -158,10 +159,27 @@ def listing_detail(request, listing_id):
     ):
         is_winner = True
 
-    return render(request, "auction/listing.html",{
+    return render(request, "auctions/listing.html",{
         "listing": listing,
         "current_price": current_price,
         "error": error,
         "comments": comments,
         "is_winner": is_winner
     }) 
+
+@login_required
+def create_listing(request):
+    if request.method == "POST":
+        form = ListingForm(request.POST)
+        if form.is_valid():
+            listing = form.save(commit=False)
+            listing.owner = request.user
+            listing.save()
+            return redirect("listing_detail", listing_id=listing.id)
+        
+    else:
+        form = ListingForm()
+
+    return render(request, "auctions/create_listing.html", {
+        "form": form
+    })

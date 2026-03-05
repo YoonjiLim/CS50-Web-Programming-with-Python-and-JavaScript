@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.core.validators import MinValueValidator
 
     
 class User(AbstractUser):
@@ -11,15 +12,26 @@ class User(AbstractUser):
         related_name="watchers"
     )
 
+class Category(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Listing(models.Model):
     #Each listing can have multiple bids and comments
     title = models.CharField(max_length=80)
     description = models.TextField()
-    starting_bid = models.DecimalField(max_digits=10, decimal_places=2)
     image_url = models.URLField(blank=True)
-    category = models.CharField(max_length=50, blank=True)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    starting_bid = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2,
+        validators=[MinValueValidator(0.01)]
+        )
 
     owner = models.ForeignKey(
         User, 
@@ -33,6 +45,14 @@ class Listing(models.Model):
         null=True,
         blank=True,
         related_name="won_listings"
+    )
+
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="listings"
     )
 
     def __str__(self):
