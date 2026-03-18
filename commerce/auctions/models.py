@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import MinValueValidator
+from decimal import Decimal
 
     
 class User(AbstractUser):
@@ -30,7 +31,7 @@ class Listing(models.Model):
     starting_bid = models.DecimalField(
         max_digits=10, 
         decimal_places=2,
-        validators=[MinValueValidator(0.01)]
+        validators=[MinValueValidator(Decimal("0.01"))]
         )
 
     owner = models.ForeignKey(

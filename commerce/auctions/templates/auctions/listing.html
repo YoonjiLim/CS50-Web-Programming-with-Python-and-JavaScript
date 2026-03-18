@@ -1,6 +1,8 @@
 {% extends "auctions/layout.html" %}
+{% load tz %}
 
 {% block body %}
+<!--Listing Detail-->
 <h2>{{ listing.title }}</h2>
 
 {% if listing.image_url %}
@@ -8,12 +10,90 @@
 {% endif %}
 
 <p><strong>Description:</strong> {{ listing.description }}</p>
-<p><strong>Starting Bid:</strong> {{ listing.starting_bid }}</p>
 
+<p><strong>Current Price:</strong> ${{ current_price }} </p>
+{% if highest_bidder %}
+    <p><strong>Highest Bidder:</strong> {{ highest_bidder }}</p>
+{% endif %}
+
+<!--Watchlist-->
+{% if user.is_authenticated %}
+<form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="watchlist">
+    {% if is_watchlisted %}
+        <button type="submit">Remove from Watchlist</button>
+    {% else %}
+        <button type="submit">Add to Watchlist</button>
+    {% endif %}
+</form>
+{% endif %}
+
+<!--Error-->
+{% if error %}
+    <p style="color:red">{{ error }}</p>
+{% endif %}
+
+<!--Bid-->
+{% if user.is_authenticated and listing.is_active and user != listing.owner %}
+<h3>Place a Bid</h3>
+<form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="bid">
+    <input type="number" name="bid" step="0.01" min="{{ current_price|add:0.01 }}" placeholder="Enter your bid" required>
+    <button type="submit">Place Bid</button>
+</form>
+{% endif %}
+
+<!--Close Auction-->
+{% if user == listing.owner and listing.is_active %}
+<form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="close">
+    <button type="submit">Close Auction</button>
+</form>
+{% endif %}
+
+<!--Winner-->
+{% if not listing.is_active %}
+    <p>This auction is closed.</p>
+    {% if winner %}
+        <p><strong>Winner:</strong> {{ winner.username }}</p>
+    {% endif %}
+
+    {% if is_winner %}
+        <p style="color:green">You won this auction!</p>   
+    {% endif %}
+{% endif %}
+
+<!--Category & Owner-->
 {% if listing.category %}
     <p><strong>Category:</strong> {{ listing.category }}</p>
 {% endif %}
 
 <p><strong>Owner:</strong> {{ listing.owner }}</p>
+
+<!--Comment-->
+<h3>Comments</h3>
+{% for comment in comments %}
+<div style="margin-bottom:10px; border-bottom:1px solid #ccc;">
+    <strong>{{ comment.author }}</strong>
+    <small>{{ comment.created_at|localtime|date:"Y-m-d H:i T" }}</small>
+    <p>{{ comment.content }}</p>
+</div>
+{% empty %}
+<p>No comments yet.</p>
+{% endfor %}
+
+<!--Add Comment-->
+{% if user.is_authenticated %}
+<h4>Add a Comment</h4>
+<form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="comment">
+    <textarea name="comment" rows="3" placeholder="Write your comment" required></textarea>
+    <button type="submit">Post Comment</button>
+</form>
+{% endif %}
 
 {% endblock %}

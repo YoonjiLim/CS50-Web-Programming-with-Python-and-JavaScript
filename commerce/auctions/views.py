@@ -6,12 +6,17 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
 from auctions.forms import ListingForm
-from .models import Bid, Listing, User, Comment
+from .models import Bid, Listing, User, Comment, Category
 from decimal import Decimal
 
 
 def index(request):
     listings = Listing.objects.filter(is_active=True)
+
+    for listing in listings:
+        highest_bid = listing.bids.order_by("-amount").first()
+        listing.current_price = highest_bid.amount if highest_bid else listing.starting_bid
+    
     return render(request, "auctions/index.html", {
         "listings": listings
     })
@@ -72,9 +77,14 @@ def register(request):
 def listing_detail(request, listing_id):
     error = None
     listing = get_object_or_404(Listing, pk=listing_id)
+    
+    is_watchlisted = False
+    if request.user.is_authenticated:
+        is_watchlisted = request.user.watchlist.filter(pk=listing.pk).exists()
 
     highest_bid = listing.bids.order_by("-amount").first()
     current_price = highest_bid.amount if highest_bid else listing.starting_bid
+    highest_bidder = highest_bid.bidder if highest_bid else None
 
     #POST
     if request.method == "POST":
@@ -91,10 +101,12 @@ def listing_detail(request, listing_id):
             except (TypeError, ValueError):
                 error = "Invalid bid amount."
             else:
-                if not listing.is_active:
+                if request.user == listing.owner:
+                    error = "You cannot bid on your own listing."
+                elif not listing.is_active:
                     error = "Auction is closed."
                 elif bid_amount <= current_price:
-                    error = "Your bid must be higher than the current price."
+                    error = f"Your bid must be higher than the ${current_price}."
                 else:
                     Bid.objects.create(
                         listing=listing,
@@ -151,6 +163,7 @@ def listing_detail(request, listing_id):
     #GET
     comments = listing.comments.all().order_by("-created_at")
 
+    winner = listing.winner
     is_winner = False
     if (
         request.user.is_authenticated
@@ -164,8 +177,12 @@ def listing_detail(request, listing_id):
         "current_price": current_price,
         "error": error,
         "comments": comments,
-        "is_winner": is_winner
+        "is_winner": is_winner,
+        "winner": winner,
+        "is_watchlisted": is_watchlisted,
+        "highest_bidder": highest_bidder
     }) 
+
 
 @login_required
 def create_listing(request):
@@ -182,4 +199,35 @@ def create_listing(request):
 
     return render(request, "auctions/create_listing.html", {
         "form": form
+    })
+
+
+@login_required
+def watchlist(request):
+    listings = request.user.watchlist.all()
+    
+    return render(request, "auctions/watchlist.html", {
+        "listings": listings
+    })
+
+
+def categories(request):
+    categories = Category.objects.all()
+
+    return render(request, "auctions/categories.html", {
+        "categories": categories
+    })
+
+
+def category_listings(request, category_id):
+    category = get_object_or_404(Category, pk=category_id)
+
+    listings = Listing.objects.filter(
+        category=category,
+        is_active=True
+    )
+
+    return render(request, "auctions/category_listings.html", {
+        "category": category,
+        "listings": listings
     })

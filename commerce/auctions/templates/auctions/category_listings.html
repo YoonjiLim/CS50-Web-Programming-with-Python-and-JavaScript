@@ -1,0 +1,25 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<h2>{{ category.name }}</h2>
+
+{% for listing in listings %}
+<div>
+    <h3>
+        <a href="{% url 'listing_detail' listing.id %}">
+            {{ listing.title }}
+        </a>
+    </h3>
+    <p>{{ listing.description }}</p>
+
+    {% if listing.image_url %}
+    <img src="{{ listing.image_url }}" style="max-width:200px;">
+    {% endif %}
+</div>
+
+{% empty %}
+<p>No active listings in this category.</p>
+{% endfor %}
+
+{% endblock %}
