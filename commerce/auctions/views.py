@@ -206,6 +206,10 @@ def create_listing(request):
 def watchlist(request):
     listings = request.user.watchlist.all()
     
+    for listing in listings:
+        highest_bid = listing.bids.order_by("-amount").first()
+        listing.current_price = highest_bid.amount if highest_bid else listing.starting_bid
+    
     return render(request, "auctions/watchlist.html", {
         "listings": listings
     })
@@ -226,6 +230,10 @@ def category_listings(request, category_id):
         category=category,
         is_active=True
     )
+
+    for listing in listings:
+        highest_bid = listing.bids.order_by("-amount").first()
+        listing.current_price = highest_bid.amount if highest_bid else listing.starting_bid
 
     return render(request, "auctions/category_listings.html", {
         "category": category,

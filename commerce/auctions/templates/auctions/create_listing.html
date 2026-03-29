@@ -1,44 +1,69 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-<h2>Create Listing</h2>
 
-<form method="POST">
-    {% csrf_token %}
-    
-    <div class="form-group">
-        {{ form.title.label_tag }}
-        {{ form.title }}
-        {{ form.title.errors }}
-    </div>
+<div class="container mt-4" style="max-width:600px;">
+    <h2 class="mb-4">Create Listing</h2>
 
-    <div class="form-group">
-        {{ form.description.label_tag }}
-        {{ form.description }}
-        {{ form.description.errors }}
-    </div>
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            {{ form.title.label_tag }}
+            {{ form.title }}
+            {% if form.title.errors %}
+                <div class="text-danger small">
+                    {{ form.title.errors }}
+                </div>
+            {% endif %}
+        </div>
 
-    <div class="form-group">
-        {{ form.starting_bid.label_tag }}
-        {{ form.starting_bid }}
-        {{ form.starting_bid.errors }}
-    </div>
+        <div class="form-group">
+            {{ form.description.label_tag }}
+            {{ form.description }}
+            {% if form.description.errors %}
+                <div class="text-danger small">
+                    {{ form.description.errors }}
+                </div>
+            {% endif %}
+        </div>
 
-    <div class="form-group">
-        {{ form.image_url.label_tag }}
-        {{ form.image_url }}
-        {{ form.image_url.errors }}
-    </div>
+        <div class="form-group">
+            {{ form.starting_bid.label_tag }}
+            {{ form.starting_bid }}
+            {% if form.starting_bid.errors %}
+                <div class="text-danger small">
+                    {{ form.starting_bid.errors }}
+                </div>
+            {% endif %}
+        </div>
 
-    <div class="form-group">
-        {{ form.category.label_tag }}
-        {{ form.category }}
-        {{ form.category.errors }}
-    </div>
+        <div class="form-group">
+            {{ form.image_url.label_tag }}
+            {{ form.image_url }}
+            {% if form.image_url.errors %}
+                <div class="text-danger small">
+                    {{ form.image_url.errors }}
+                </div>
+            {% endif %}
+        </div>
 
-    <button type="submit" class="btn btn-primary">
-        Create Listing
-    </button>
-</form>
+        <div class="form-group">
+            {{ form.category.label_tag }}
+            {{ form.category }}
+            {% if form.category.errors %}
+                <div class="text-danger small">
+                    {{ form.category.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="text-right">
+            <button type="submit" class="btn btn-primary px-4">
+                Create Listing
+            </button>
+        </div>
+    </form>
+</div>
 
 {% endblock %}

@@ -1,99 +1,134 @@
 {% extends "auctions/layout.html" %}
+{% load static %}
 {% load tz %}
 
 {% block body %}
+
+<div class="container mt-4">
 <!--Listing Detail-->
-<h2>{{ listing.title }}</h2>
+    <div class="row">
 
-{% if listing.image_url %}
-    <img src="{{ listing.image_url }}" alt="{{ listing.title }}" style="max-width:400px;">
-{% endif %}
+        {% if listing.image_url %}
+            <div class="col-md-6 mb-3">
+                <img src="{{ listing.image_url }}" alt="{{ listing.title }}" 
+                class="img-fluid rounded" style="width:100%; max-height:400px; object-fit:cover;">
+            </div>
+            <!--Right side(infos)-->
+            <div class="col-md-6">
+        {% else %}
+            <!--No image(HTML placeholder)-->
+            <div class="col-md-6 mb-3">
+                <div style="height:400px; background:#f8f9fa;
+                display:flex; align-items:center; justify-content:center;
+                color:#6c757d; font-size:20px; border-radius:8px;">
+                No Image Available
+                </div>
+            </div>
+            <!--Right side-->
+            <div class="col-md-6">
+        {% endif %}
+                <!--Informations-->
+                <h2 class="mb-3">{{ listing.title }}</h2>
 
-<p><strong>Description:</strong> {{ listing.description }}</p>
+                <p class="mb-2"><strong>Description:</strong> {{ listing.description }}</p>
 
-<p><strong>Current Price:</strong> ${{ current_price }} </p>
-{% if highest_bidder %}
-    <p><strong>Highest Bidder:</strong> {{ highest_bidder }}</p>
-{% endif %}
+                <p class="mb-2"><strong>Current Price:</strong> ${{ current_price }} </p>
+                {% if highest_bidder %}
+                    <p class="mb-3"><strong>Highest Bidder:</strong> {{ highest_bidder }}</p>
+                {% endif %}
 
-<!--Watchlist-->
-{% if user.is_authenticated %}
-<form method="POST">
-    {% csrf_token %}
-    <input type="hidden" name="action" value="watchlist">
-    {% if is_watchlisted %}
-        <button type="submit">Remove from Watchlist</button>
-    {% else %}
-        <button type="submit">Add to Watchlist</button>
-    {% endif %}
-</form>
-{% endif %}
+                <!--Watchlist-->
+                {% if user.is_authenticated %}
+                <form method="POST" class="mb-2">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="watchlist">
+                    <button type="submit" class="btn btn-outline-primary btn-sm">
+                        {% if is_watchlisted %}
+                            Remove from Watchlist
+                        {% else %}
+                            Add to Watchlist
+                        {% endif %}
+                    </button>
+                </form>
+                {% endif %}
 
-<!--Error-->
-{% if error %}
-    <p style="color:red">{{ error }}</p>
-{% endif %}
+                <!--Error-->
+                {% if error %}
+                    <div class="alert alert-danger py-1" role="alert">{{ error }}</div>
+                {% endif %}
 
-<!--Bid-->
-{% if user.is_authenticated and listing.is_active and user != listing.owner %}
-<h3>Place a Bid</h3>
-<form method="POST">
-    {% csrf_token %}
-    <input type="hidden" name="action" value="bid">
-    <input type="number" name="bid" step="0.01" min="{{ current_price|add:0.01 }}" placeholder="Enter your bid" required>
-    <button type="submit">Place Bid</button>
-</form>
-{% endif %}
+                <!--Bid-->
+                {% if user.is_authenticated and listing.is_active and user != listing.owner %}
+                <h4>Place a Bid</h4>
+                <form method="POST" class="mb-2">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="bid">
+                    <input type="number" name="bid" step="0.01" min="{{ current_price|add:0.01 }}" 
+                    class="form-control mb-2" placeholder="Enter your bid" required>
+                    <button type="submit" class="btn btn-success btn-sm">Place Bid</button>
+                </form>
+                {% endif %}
 
-<!--Close Auction-->
-{% if user == listing.owner and listing.is_active %}
-<form method="POST">
-    {% csrf_token %}
-    <input type="hidden" name="action" value="close">
-    <button type="submit">Close Auction</button>
-</form>
-{% endif %}
+                <!--Close Auction-->
+                {% if user == listing.owner and listing.is_active %}
+                <form method="POST" class="mb-3">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="close">
+                    <button type="submit" class="btn btn-danger btn-sm">Close Auction</button>
+                </form>
+                {% endif %}
 
-<!--Winner-->
-{% if not listing.is_active %}
-    <p>This auction is closed.</p>
-    {% if winner %}
-        <p><strong>Winner:</strong> {{ winner.username }}</p>
-    {% endif %}
+                <!--Winner-->
+                {% if not listing.is_active %}
+                    <div class="mt-2">
+                        <div class="alert alert-secondary" role="alert">This auction is closed.</div>
+                        {% if winner %}
+                            <p><strong>Winner:</strong> {{ winner.username }}</p>
+                        {% endif %}
 
-    {% if is_winner %}
-        <p style="color:green">You won this auction!</p>   
-    {% endif %}
-{% endif %}
+                        {% if is_winner %}
+                            <p class="text-success font-weight-bold">You won this auction!</p>   
+                        {% endif %}
+                    </div>
+                {% endif %}
 
-<!--Category & Owner-->
-{% if listing.category %}
-    <p><strong>Category:</strong> {{ listing.category }}</p>
-{% endif %}
+                <!--Category & Owner-->
+                {% if listing.category %}
+                    <p class="mb-2"><strong>Category:</strong> {{ listing.category }}</p>
+                {% endif %}
 
-<p><strong>Owner:</strong> {{ listing.owner }}</p>
+                <p><strong>Owner:</strong> {{ listing.owner }}</p>
+                <!--Comments-->
+                <div class="border-top mt-4 pt-3">
 
-<!--Comment-->
-<h3>Comments</h3>
-{% for comment in comments %}
-<div style="margin-bottom:10px; border-bottom:1px solid #ccc;">
-    <strong>{{ comment.author }}</strong>
-    <small>{{ comment.created_at|localtime|date:"Y-m-d H:i T" }}</small>
-    <p>{{ comment.content }}</p>
+                    <h4 class="mb-3">Comments</h4>
+                    {% for comment in comments %}
+                    <div class="border-bottom mb-2 pb-2 last:border-0">
+                        <strong>{{ comment.author }}</strong>
+                        <small class="text-muted">
+                            {{ comment.created_at|localtime|date:"Y-m-d H:i T" }}
+                        </small>
+                        <p class="mb-1">{{ comment.content }}</p>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted">No comments yet.</p>
+                    {% endfor %}
+
+                    <!--Add Comment-->
+                    {% if user.is_authenticated %}
+                    <div class="mt-4">
+                        <h4>Add a Comment</h4>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="comment">
+                            <textarea name="comment" class="form-control mb-2" rows="3" placeholder="Write your comment" required></textarea>
+                            <button type="submit" class="btn btn-primary btn-sm">Post Comment</button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+    </div>  
 </div>
-{% empty %}
-<p>No comments yet.</p>
-{% endfor %}
-
-<!--Add Comment-->
-{% if user.is_authenticated %}
-<h4>Add a Comment</h4>
-<form method="POST">
-    {% csrf_token %}
-    <input type="hidden" name="action" value="comment">
-    <textarea name="comment" rows="3" placeholder="Write your comment" required></textarea>
-    <button type="submit">Post Comment</button>
-</form>
-{% endif %}
 
 {% endblock %}
