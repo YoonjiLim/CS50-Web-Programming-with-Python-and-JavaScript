@@ -1,3 +1,36 @@
 textarea {
     min-height: 400px;
 }
+
+.submit-btn {
+    margin-top: 10px;
+    text-align: right;
+}
+
+.mail-btn {
+    border: none; 
+    padding: 6px 12px;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.archive-btn {
+    background-color: #007bff;
+    margin-right: 10px;
+}
+
+.unarchive-btn {
+    background-color: #6c757d;
+    margin-right: 10px;
+}
+
+.reply-btn {
+    background-color: #28a745;
+}
+
+.mail-btn:hover {
+    opacity: 0.85;
+}
+

@@ -21,15 +21,19 @@
                 From: <input disabled class="form-control" value="{{ request.user.email }}">
             </div>
             <div class="form-group">
-                To: <input id="compose-recipients" class="form-control">
+                To: <input id="compose-recipients" class="form-control" placeholder="Recipients">
             </div>
             <div class="form-group">
                 <input class="form-control" id="compose-subject" placeholder="Subject">
             </div>
-            <textarea class="form-control" id="compose-body" placeholder="Body"></textarea>
-            <input type="submit" class="btn btn-primary"/>
+            <textarea class="form-control" id="compose-body" placeholder="Write your message..."></textarea>
+            <div class="submit-btn">
+                <input type="submit" class="btn btn-primary"/>
+            </div>
         </form>
     </div>
+
+    <div id="email-view"></div>
 {% endblock %}
 
 {% block script %}
