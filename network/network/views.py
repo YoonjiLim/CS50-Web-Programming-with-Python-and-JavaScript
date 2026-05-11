@@ -61,3 +61,42 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+
+def posts(request):
+    if request.method == "GET":
+        pass
+
+    elif request.method == "POST":
+        pass
+
+    return render(request, "network/posts.html")
+
+
+def edit_post(request, post_id):
+    if request.method == "PUT":
+        pass
+
+    return HttpResponse(status=400)
+
+
+def like_post(request, post_id):
+    if request.method == "POST":
+        pass
+
+    return HttpResponse(status=400)
+
+
+def profile(request, username):
+    pass        
+
+
+def follow_user(request, username):
+    if request.method == "POST":
+        pass
+
+    return HttpResponse(status=400)
+
+
+def following_posts(request):
+    pass    
