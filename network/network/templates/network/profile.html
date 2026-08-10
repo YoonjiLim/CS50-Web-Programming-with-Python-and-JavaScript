@@ -1,0 +1,37 @@
+<h2>{{ profile_user.username }}</h2>
+
+<p>Followers: {{ followers_count }}</p>
+<p>Following: {{ following_count }}</p>
+
+{% for post in posts %}
+    <div>
+        <p>{{ post.content }}</p>
+        <p>{{ post.timestamp }}</p>
+    </div>
+{% endfor %}
+
+<div class="pagination">
+    {% if posts.has_previous %}
+        <a href="?page={{ posts.previous_page_number }}">Previous</a>
+    {% endif %}
+
+    <span>{{ posts.number }} of {{ posts.paginator.num_pages }}</span>
+
+    {% if posts.has_next %}
+        <a href="?page={{ posts.next_page_number }}">Next</a>
+    {% endif %}
+</div>
+
+{% if user.is_authenticated and user != profile_user %}
+    {% if is_following %}
+        <form action="{% url 'unfollow' profile_user.username %}" method="post">
+            {% csrf_token %}
+            <button id="unfollow-btn">Unfollow</button>
+        </form>
+    {% else %}
+        <form action="{% url 'follow' profile_user.username %}" method="post">
+            {% csrf_token %}
+            <button id="follow-btn">Follow</button>
+        </form>
+    {% endif %}
+{% endif %}

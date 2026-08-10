@@ -1,5 +1,15 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-    TODO
+
+    <h2>All Posts</h2>
+    <div id="new-post">
+        {% csrf_token %}
+        
+        <textarea id="post-content"></textarea>
+        <button id="submit-post">Submit</button>
+    </div>
+    
+    <div id="posts-container" data-url="/posts"></div>
+    <div id="pagination"></div>                    
 {% endblock %}
