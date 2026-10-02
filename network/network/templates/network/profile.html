@@ -1,37 +1,54 @@
-<h2>{{ profile_user.username }}</h2>
+{% extends "network/layout.html"%}
 
-<p>Followers: {{ followers_count }}</p>
-<p>Following: {{ following_count }}</p>
+{% block body %}
+
+<div class="profile-header">
+    <div class="profile-title">
+        <h2>{{ profile_user.username }}</h2>
+
+        {% if user.is_authenticated and user != profile_user %}
+            {% if is_following %}
+                <form action="{% url 'unfollow' profile_user.username %}" method="post">
+                    {% csrf_token %}
+                    <button id="unfollow-btn" class="unfollow-btn">Unfollow</button>
+                </form>
+            {% else %}
+                <form action="{% url 'follow' profile_user.username %}" method="post">
+                    {% csrf_token %}
+                    <button id="follow-btn" class="follow-btn">Follow</button>
+                </form>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <div class="profile-status">
+        <span>Followers: {{ followers_count }}</span>
+        <span>Following: {{ following_count }}</span>
+    </div>
+</div>
 
 {% for post in posts %}
-    <div>
-        <p>{{ post.content }}</p>
-        <p>{{ post.timestamp }}</p>
+    <div class="post-card">
+        <p class="post-content">{{ post.content }}</p>
+        <small class="post-timestamp">{{ post.timestamp }}</small>
+        <p class="likes-count">Likes: {{ post.likes.count }}</p>
     </div>
 {% endfor %}
 
 <div class="pagination">
     {% if posts.has_previous %}
         <a href="?page={{ posts.previous_page_number }}">Previous</a>
+    {% else %}
+        <span class="pagination-placeholder"></span>
     {% endif %}
 
     <span>{{ posts.number }} of {{ posts.paginator.num_pages }}</span>
 
     {% if posts.has_next %}
         <a href="?page={{ posts.next_page_number }}">Next</a>
+    {% else %}
+        <span class="pagination-placeholder"></span>
     {% endif %}
 </div>
 
-{% if user.is_authenticated and user != profile_user %}
-    {% if is_following %}
-        <form action="{% url 'unfollow' profile_user.username %}" method="post">
-            {% csrf_token %}
-            <button id="unfollow-btn">Unfollow</button>
-        </form>
-    {% else %}
-        <form action="{% url 'follow' profile_user.username %}" method="post">
-            {% csrf_token %}
-            <button id="follow-btn">Follow</button>
-        </form>
-    {% endif %}
-{% endif %}
+{% endblock %}

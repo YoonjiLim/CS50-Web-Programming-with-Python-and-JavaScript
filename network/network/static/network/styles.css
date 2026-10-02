@@ -1,0 +1,209 @@
+:root {
+    --primary-blue: #1d4ed8;
+}
+
+/* Navbar */
+.navbar { 
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.nav-link {
+    margin-left: 10px;
+}
+
+.navbar-brand {
+    color: var(--primary-blue) !important;
+}
+
+.nav-link:hover {
+    color: var(--primary-blue) !important;
+}
+
+/* Body */
+.body { 
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    background-color: #f8fafc;
+}
+
+/* New Post Form */
+#new-post {
+    margin-bottom: 30px; 
+}
+
+#post-content, .edit-textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px;
+    resize: vertical;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    box-sizing: border-box;
+}
+
+#post-content:focus, .edit-textarea:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(41, 90, 225, 0.2);
+}
+
+.post-submit {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+
+#submit-post {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 6px;
+    background-color: var(--primary-blue);
+    color: white;
+}
+
+#submit-post:hover {
+    background-color: #1e40af;
+}
+
+/* Post */
+.post-card {
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #dde0e6;
+    border-radius: 8px;
+    background-color: white;
+    overflow-wrap: break-word;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.post-user {
+    margin-bottom: 12px;
+}
+
+.post-user a {
+    color: var(--primary-blue);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.post-user a:hover {
+    color: #1e40af;
+}
+
+.post-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.post-button {
+    padding: 6px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.post-button:hover {
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+    background-color: #eff6ff;
+}
+
+.post-timestamp {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.likes-count {
+    margin-bottom: 0px;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+/* Pagination */
+.pagination {
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.pagination button, .pagination a, .pagination-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 6px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    background-color: white;
+    color: #3c4757;
+    text-decoration: none;
+}
+
+.pagination button:hover, .pagination a:hover {
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+    background-color: #eff6ff;
+}
+
+.pagination span {
+    font-size: 14px;
+    color: #5a6677;
+}
+
+.pagination-placeholder {
+    visibility: hidden;
+}
+
+
+/* Profile */
+.post-content {
+    margin-bottom: 8px;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.profile-header {
+    margin-bottom: 30px;
+}
+
+.profile-status {
+    display: flex;
+    gap: 24px;
+    color: #6b7280;
+}
+
+.profile-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.follow-btn, .unfollow-btn {
+    padding: 7px 16px;
+    border: none;
+    border-radius: 6px;
+    background-color: var(--primary-blue);
+    color: white;
+}
+
+.follow-btn:hover, .unfollow-btn:hover {
+    background-color: #1e40af;
+}
+
+/* 추가 */
+#submit-post:focus, .post-button:focus, .pagination button:focus, .pagination a:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 2px rgba(29, 78, 215, 0.15);
+}

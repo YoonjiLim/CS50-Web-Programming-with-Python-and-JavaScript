@@ -6,10 +6,12 @@
     <div id="new-post">
         {% csrf_token %}
         
-        <textarea id="post-content"></textarea>
-        <button id="submit-post">Submit</button>
+        <textarea id="post-content" placeholder="Write a new post."></textarea>
+        <div class="post-submit">
+            <button id="submit-post">Submit</button>
+        </div>
     </div>
     
     <div id="posts-container" data-url="/posts"></div>
-    <div id="pagination"></div>                    
+    <div id="pagination" class="pagination"></div>                    
 {% endblock %}
